@@ -38,3 +38,48 @@ document.addEventListener('DOMContentLoaded', function() {
         `;
     });
 });
+
+//handling user authentication (sign up, login, logout)
+    const signUpForm = document.getElementById('sign-up-form');
+    const loginForm = document.getElementById('login-form');
+    const logoutButton = document.getElementById('logout-button');
+    const authStatus = document.getElementById('auth-status');
+
+    signUpForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        const username = document.getElementById('sign-up-username').value;
+        const password = document.getElementById('sign-up-password').value;
+
+        if (username && password) {
+            localStorage.setItem('user', JSON.stringify({ username, password }));
+            authStatus.textContent = 'Sign-up successful. Please log in.';
+        } else {
+            authStatus.textContent = 'Please fill in both fields.';
+        }
+    });
+
+    loginForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        const username = document.getElementById('login-username').value;
+        const password = document.getElementById('login-password').value;
+        const storedUser = JSON.parse(localStorage.getItem('user'));
+
+        if (storedUser && storedUser.username === username && storedUser.password === password) {
+            localStorage.setItem('loggedIn', 'true');
+            authStatus.textContent = 'Login successful.';
+        } else {
+            authStatus.textContent = 'Invalid username or password.';
+        }
+    });
+
+    logoutButton.addEventListener('click', function() {
+        localStorage.removeItem('loggedIn');
+        authStatus.textContent = 'Logged out successfully.';
+    });
+
+    // Check login status on page load
+    if (localStorage.getItem('loggedIn') === 'true') {
+        authStatus.textContent = 'You are logged in.';
+    } else {
+        authStatus.textContent = 'You are not logged in.';
+    };
