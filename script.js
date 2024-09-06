@@ -71,6 +71,13 @@ document.addEventListener('DOMContentLoaded', function() {
             authStatus.textContent = 'Invalid username or password.';
         }
     });
+    
+    //only show logout button if user is logged in
+    if (localStorage.getItem('loggedIn') === 'true') {
+        logoutButton.style.display = 'block';
+    } else {
+        logoutButton.style.display = 'none';
+    }
 
     logoutButton.addEventListener('click', function() {
         localStorage.removeItem('loggedIn');
